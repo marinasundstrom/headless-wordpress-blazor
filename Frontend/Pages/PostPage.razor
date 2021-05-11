@@ -1,0 +1,28 @@
+﻿@page "/{*slug}"
+@inject WordPressClient WordPressClient
+
+@if (post != null)
+{
+    <h1>@post.Title.Rendered</h1>
+
+    <span>@post.Date @post.Embedded.Author.Select(x => x.Name).First()</span>
+
+    <div>@((MarkupString)post.Content.Rendered)</div>
+}
+
+@code {
+    private Post post;
+
+    [Parameter]
+    public string Slug { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var queryBuilder = new WordPressPCL.Utility.PostsQueryBuilder();
+        queryBuilder.Slugs = new[] { Slug };
+        queryBuilder.Statuses = new[] { Status.Publish };
+        queryBuilder.Embed = true;
+        var results = await WordPressClient.Posts.Query(queryBuilder);
+        post = results.Single();
+    }
+}

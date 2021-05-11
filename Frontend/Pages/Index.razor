@@ -1,27 +1,84 @@
 @page "/"
+@implements IDisposable
 @inject WordPressClient WordPressClient
-
-<h1>Hello, world!</h1>
-
-Welcome to your new app.
-
-<SurveyPrompt Title="How is Blazor working for you?" />
+@inject NavigationManager NavigationManager
 
 @if(posts != null) 
 {
     @foreach(var post in posts) 
     {
-        <h1>@post.Title.Rendered</h1>
+        <h1><a href="@post.Slug">@post.Title.Rendered</a></h1>
 
-        <div>@((MarkupString)post.Content.Rendered)</div>
+        <span>@post.Date @post.Embedded.Author.Select(x => x.Name).First()</span>
+
+        <div>@((MarkupString)post.Excerpt.Rendered.ReplaceMoreLink(post.Slug))</div>
+
+        <hr />
     }
+
+    <nav aria-label="...">
+      <ul class="pagination">
+        <li class="page-item disabled">
+          <a class="page-link" href="/?page=1" tabindex="-1">Previous</a>
+        </li>
+        <li class="page-item"><a class="page-link" href="#">1</a></li>
+        <li class="page-item active">
+          <a class="page-link" href="/?page=2">2 <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item">
+          <a class="page-link" href="/?page=3">Next</a>
+        </li>
+      </ul>
+    </nav>
 }
 
 @code {
     private IEnumerable<Post> posts;
 
-    protected override async Task OnInitializedAsync() 
+    public int Page { get; set; } = 1;
+
+    protected override async Task OnInitializedAsync()
     {
-        posts = await WordPressClient.Posts.GetAll();
+        NavigationManager.LocationChanged += OnLocationChanged;
+
+        await LoadData();
+
+        await Task.CompletedTask;
+    }
+
+    private async void OnLocationChanged(object sender, LocationChangedEventArgs e)
+    {
+        await LoadData();
+    }
+
+    private async Task LoadData()
+    {
+        var uri = new Uri(NavigationManager.Uri);
+
+        var result = Microsoft.AspNetCore.WebUtilities.QueryHelpers.ParseQuery(uri.Query);
+
+        if (result.TryGetValue("page", out var page))
+        {
+            Page = int.Parse(page.First());
+        }
+        else
+        {
+            Page = 1;
+        }
+
+        var queryBuilder = new WordPressPCL.Utility.PostsQueryBuilder();
+        queryBuilder.Statuses = new[] { Status.Publish };
+        queryBuilder.Embed = true;
+        queryBuilder.Page = Page;
+        queryBuilder.PerPage = 1;
+        posts = await WordPressClient.Posts.Query(queryBuilder);
+
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        NavigationManager.LocationChanged -= OnLocationChanged;
     }
 }
