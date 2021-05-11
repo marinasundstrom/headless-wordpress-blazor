@@ -1,0 +1,27 @@
+@page "/"
+@inject WordPressClient WordPressClient
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+<SurveyPrompt Title="How is Blazor working for you?" />
+
+@if(posts != null) 
+{
+    @foreach(var post in posts) 
+    {
+        <h1>@post.Title.Rendered</h1>
+
+        <div>@((MarkupString)post.Content.Rendered)</div>
+    }
+}
+
+@code {
+    private IEnumerable<Post> posts;
+
+    protected override async Task OnInitializedAsync() 
+    {
+        posts = await WordPressClient.Posts.GetAll();
+    }
+}

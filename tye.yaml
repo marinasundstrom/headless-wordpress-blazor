@@ -12,6 +12,12 @@ services:
     - port: 5004
       protocol: http
 
+- name: frontend
+  project: Frontend/Frontend.csproj
+  bindings:
+    - port: 5005
+      protocol: https
+
 - name: wordpress-mysql
   image: mysql/mysql-server:latest
   bindings:

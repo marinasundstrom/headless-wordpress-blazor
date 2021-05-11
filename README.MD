@@ -3,7 +3,9 @@ Chat with the community on Gitter if you need help:
 
 This project demonstrates how to start an ASP.NET Core server, integrate WordPress into its pipeline and add additional PHP plugins into it.
 
-# WordPress
+# Headless WordPress with Blazor frontend
+
+***With documentation extended with Tye***
 
 Even though the project is noticeably small, it contains the entire WordPress CMS. How? This complex PHP web framework was already compiled into the .NET Standard library (see [wpdotnet-sdk](https://github.com/iolevel/wpdotnet-sdk) for more information) and packed into a NuGet package. This demo may just reference it.
 
