@@ -1,0 +1,30 @@
+# tye application configuration file
+# read all about it at https://github.com/dotnet/tye
+#
+# when you've given us a try, we'd love to know what you think:
+#    https://aka.ms/AA7q20u
+#
+name: peachpie-wordpress
+services:
+- name: app
+  project: app/app.csproj
+  bindings:
+    - port: 5004
+      protocol: http
+
+- name: wordpress-mysql
+  image: mysql/mysql-server:latest
+  bindings:
+    - port: 3306
+  env:
+    - name: MYSQL_ROOT_PASSWORD
+      value: "P@ssw0rd"
+    - name: MYSQL_DATABASE
+      value: "wordpress"
+    - name: MYSQL_USER
+      value: "user"
+    - name: MYSQL_PASSWORD
+      value: "P@ssw0rd"
+  volumes:
+    - source: .data/mysql
+      target: /var/lib/mysql
