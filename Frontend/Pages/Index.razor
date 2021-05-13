@@ -59,7 +59,7 @@
         queryBuilder.Statuses = new[] { Status.Publish };
         queryBuilder.Embed = true;
         queryBuilder.Page = Page;
-        queryBuilder.PerPage = 1;
+        queryBuilder.PerPage = 10;
         posts = await WordPressClient.Posts.Query(queryBuilder);
         TotalPages = posts.TotalPages;
 

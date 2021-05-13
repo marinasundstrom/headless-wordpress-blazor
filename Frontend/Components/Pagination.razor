@@ -1,12 +1,15 @@
 ﻿    <nav @attributes="@AdditionalAttributes">
         <ul class="pagination">
-            @if (Page != 1)
+            @if (StartIndex != 1)
             {
-                <li class="page-item"><a class="page-link" href="?page=1">First</a></li>
-            }
-            else
-            {
-                <li class="page-item disabled"><span class="page-link">First</span></li>
+                @if (Page != 1)
+                {
+                    <li class="page-item"><a class="page-link" href="?page=1">First</a></li>
+                }
+                else
+                {
+                    <li class="page-item disabled"><span class="page-link">First</span></li>
+                }
             }
             @if (Page > 1)
             {
@@ -36,13 +39,16 @@
             {
                 <li class="page-item disabled"><span class="page-link"><i class="fas fa-angle-right"></i></span></li>
             }
-            @if (Page != PageCount)
+            @if (FinishIndex != PageCount)
             {
-                <li class="page-item"><a class="page-link" href="?page=@(PageCount)">Last</a></li>
-            }
-            else
-            {
-                <li class="page-item disabled"><span class="page-link">Last</span></li>
+                @if (Page != PageCount)
+                {
+                    <li class="page-item"><a class="page-link" href="?page=@(PageCount)">Last</a></li>
+                }
+                else
+                {
+                    <li class="page-item disabled"><span class="page-link">Last</span></li>
+                }
             }
         </ul>
     </nav>
