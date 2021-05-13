@@ -16,27 +16,15 @@
         <hr />
     }
 
-    <nav aria-label="...">
-      <ul class="pagination">
-        <li class="page-item disabled">
-          <a class="page-link" href="/?page=1" tabindex="-1">Previous</a>
-        </li>
-        <li class="page-item"><a class="page-link" href="#">1</a></li>
-        <li class="page-item active">
-          <a class="page-link" href="/?page=2">2 <span class="sr-only">(current)</span></a>
-        </li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
-        <li class="page-item">
-          <a class="page-link" href="/?page=3">Next</a>
-        </li>
-      </ul>
-    </nav>
+    <Pagination Page="@Page" PageCount="@TotalPages" />
 }
 
 @code {
-    private IEnumerable<Post> posts;
+    private QueryResult<Post> posts;
 
     public int Page { get; set; } = 1;
+
+    public int TotalPages { get; set; } = 1;
 
     protected override async Task OnInitializedAsync()
     {
@@ -73,6 +61,7 @@
         queryBuilder.Page = Page;
         queryBuilder.PerPage = 1;
         posts = await WordPressClient.Posts.Query(queryBuilder);
+        TotalPages = posts.TotalPages;
 
         StateHasChanged();
     }
