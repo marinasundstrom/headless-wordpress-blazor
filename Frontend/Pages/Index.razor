@@ -44,7 +44,7 @@
     {
         var uri = new Uri(NavigationManager.Uri);
 
-        var result = Microsoft.AspNetCore.WebUtilities.QueryHelpers.ParseQuery(uri.Query);
+        var result = QueryHelpers.ParseQuery(uri.Query);
 
         if (result.TryGetValue("page", out var page))
         {
@@ -55,7 +55,7 @@
             Page = 1;
         }
 
-        var queryBuilder = new WordPressPCL.Utility.PostsQueryBuilder();
+        var queryBuilder = new PostsQueryBuilder();
         queryBuilder.Statuses = new[] { Status.Publish };
         queryBuilder.Embed = true;
         queryBuilder.Page = Page;
