@@ -21,7 +21,9 @@ Provided that you have the Tye CLI tools installed, you will be able to launch a
 $ tye run
 ```
 
-The Wordpress app is served at: ```http://localhost:5004/```
+The Blazor Frontend is served at: ```https://localhost:5005/```
+
+While Wordpress is at: ```http://localhost:5004/```
 
 You will also be able to view all the running services in the Tye Dashboard at: ```https://localhost:8000/```
 
