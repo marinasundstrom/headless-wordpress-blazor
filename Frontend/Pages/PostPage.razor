@@ -9,6 +9,8 @@ else
 {
     @if (post != null)
     {
+        <Title>@post.Title.Rendered - @Site.Title</Title>
+
         <h1>@post.Title.Rendered</h1>
 
         <span>@post.Date @post.Embedded.Author.Select(x => x.Name).First()</span>

@@ -8,7 +8,9 @@
     <PageNotFound />
 }
 else
-{ 
+{
+    <Title>@Site.Title</Title>
+
     @if(posts != null) 
     {
         @foreach(var post in posts) 
