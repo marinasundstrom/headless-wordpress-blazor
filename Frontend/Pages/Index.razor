@@ -3,24 +3,33 @@
 @inject WordPressClient WordPressClient
 @inject NavigationManager NavigationManager
 
-@if(posts != null) 
+@if (notFound)
 {
-    @foreach(var post in posts) 
+    <PageNotFound />
+}
+else
+{ 
+    @if(posts != null) 
     {
-        <h1><a href="@post.Slug">@post.Title.Rendered</a></h1>
+        @foreach(var post in posts) 
+        {
+            <h1><a href="@post.Slug">@post.Title.Rendered</a></h1>
 
-        <span>@post.Date @post.Embedded.Author.Select(x => x.Name).First()</span>
+            <span>@post.Date @post.Embedded.Author.Select(x => x.Name).First()</span>
 
-        <div>@((MarkupString)post.Excerpt.Rendered.ReplaceMoreLink(post.Slug))</div>
+            <div>@((MarkupString)post.Excerpt.Rendered.ReplaceMoreLink(post.Slug))</div>
 
-        <hr />
+            <hr />
+        }
+
+        <Pagination Page="@Page" PageCount="@TotalPages" />
     }
-
-    <Pagination Page="@Page" PageCount="@TotalPages" />
 }
 
 @code {
     private QueryResult<Post> posts;
+    private bool loadingError;
+    private bool notFound;
 
     public int Page { get; set; } = 1;
 
@@ -30,9 +39,15 @@
     {
         NavigationManager.LocationChanged += OnLocationChanged;
 
-        await LoadData();
-
         await Task.CompletedTask;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await LoadData();
+        }
     }
 
     private async void OnLocationChanged(object sender, LocationChangedEventArgs e)
@@ -42,6 +57,9 @@
 
     private async Task LoadData()
     {
+        notFound = false;
+        loadingError = false;
+
         var uri = new Uri(NavigationManager.Uri);
 
         var result = QueryHelpers.ParseQuery(uri.Query);
@@ -55,13 +73,26 @@
             Page = 1;
         }
 
-        var queryBuilder = new PostsQueryBuilder();
-        queryBuilder.Statuses = new[] { Status.Publish };
-        queryBuilder.Embed = true;
-        queryBuilder.Page = Page;
-        queryBuilder.PerPage = 10;
-        posts = await WordPressClient.Posts.Query(queryBuilder);
-        TotalPages = posts.TotalPages;
+        try
+        {
+            var queryBuilder = new PostsQueryBuilder();
+            queryBuilder.Statuses = new[] { Status.Publish };
+            queryBuilder.Embed = true;
+            queryBuilder.Page = Page;
+            queryBuilder.PerPage = 5;
+
+            posts = await WordPressClient.Posts.Query(queryBuilder);
+
+            TotalPages = posts.TotalPages;
+        }
+        catch(WordPressPCL.Models.Exceptions.WPException)
+        {
+            notFound = true;
+        }
+        catch
+        {
+            loadingError = true;
+        }
 
         StateHasChanged();
     }
