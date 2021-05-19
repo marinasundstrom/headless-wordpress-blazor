@@ -11,6 +11,17 @@ Even though the project is noticeably small, it contains the entire WordPress CM
 
 To find out more about PeachPie, check out our [peachpie.io](https://www.peachpie.io/), which includes tutorials, benchmarks and articles on PeachPie.
 
+## Screenshots
+### Frontend (Blazor)
+
+| Index         | Index         |
+| ------------- | --------------|
+| <img src="/Screenshots/Index.png" /> | <img src="/Screenshots/Index2.png" /> 
+
+| Post          | Post 2        |
+| ------------- | --------------|
+| <img src="/Screenshots/Post.png" /> | <img src="/Screenshots/Post2.png" /> | 
+
 ## Run the app with Tye
 
 This is the simplest way of running this project.
