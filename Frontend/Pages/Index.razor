@@ -15,7 +15,7 @@ else
     {
         @foreach(var post in posts) 
         {
-            <h1><a href="@post.Slug">@post.Title.Rendered</a></h1>
+            <h1 class="display-1"><a href="@post.Slug" class="text-reset text-decoration-none">@post.Title.Rendered</a></h1>
 
             <small class="text-muted">@post.Date @post.Embedded.Author.Select(x => x.Name).First()</small>
 
