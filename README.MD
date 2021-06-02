@@ -11,13 +11,9 @@ Thanks to the guys at [Iolevel](https://www.iolevel.com/) for the wonderful [Pea
 ## Screenshots
 ### Frontend (Blazor)
 
-| Index         | Index         |
+| Index         | Post         |
 | ------------- | --------------|
-| <img src="/Screenshots/Index.png" /> | <img src="/Screenshots/Index2.png" /> 
-
-| Post          | Post 2        |
-| ------------- | --------------|
-| <img src="/Screenshots/Post.png" /> | <img src="/Screenshots/Post2.png" /> | 
+| <img src="/Screenshots/Index.png" /> | <img src="/Screenshots/Post.png" />
 
 ## Run the app with Tye
 
