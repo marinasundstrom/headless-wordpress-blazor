@@ -4,9 +4,17 @@ Frontend build with Blazor, using Wordpress, running on .NET, as a headless CMS,
 
 Pre-configured for a containerized development environment using Tye.
 
+Watch [Demo Video](https://www.youtube.com/watch?v=21eOnKgJSWE)
+
+## Features
+* List excerpts of posts, and view full posts.
+* Display a Menu that has been defined in Wordpress.
+
 ## Acknowledgements
 
-Thanks to the guys at [Iolevel](https://www.iolevel.com/) for the wonderful [Peachpie](https://www.peachpie.io/) PHP compiler, and [Wordpress.NET](https://www.wpdotnet.com/).
+Thanks to the guys at [Iolevel](https://www.iolevel.com/), and the community, for the wonderful [Peachpie](https://www.peachpie.io/) PHP compiler, and [Wordpress.NET](https://www.wpdotnet.com/).
+
+And a special thanks to the Wordpress community for this awesome ecosystem
 
 ## Screenshots
 ### Frontend (Blazor)
