@@ -1,5 +1,8 @@
 ﻿@page "/{*slug}"
+@implements IDisposable
 @inject WordPressClient WordPressClient
+@inject NavigationManager NavigationManager
+@inject Site Site
 
 @if (notFound)
 {
@@ -29,6 +32,26 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        NavigationManager.LocationChanged += OnLocationChanged;
+
+        await Task.CompletedTask;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await LoadData();
+        }
+    }
+
+    private async void OnLocationChanged(object sender, LocationChangedEventArgs e)
+    {
+        await LoadData();
+    }
+
+    private async Task LoadData()
+    {
         notFound = false;
         loadingError = false;
 
@@ -55,5 +78,12 @@ else
             loadingError = true;
             return;
         }
+
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        NavigationManager.LocationChanged -= OnLocationChanged;
     }
 }

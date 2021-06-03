@@ -32,6 +32,10 @@ namespace Frontend
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
 
+            services.AddSingleton<Site>();
+
+            services.AddHttpClient();
+
             services.AddScoped<WordPressClient>(sp => {
                 var wordpressUrl = Configuration.GetServiceUri("app");
                 return new WordPressClient($"{wordpressUrl}/wp-json/");

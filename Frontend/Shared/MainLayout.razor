@@ -1,4 +1,5 @@
 @inherits LayoutComponentBase
+@inject Site Site
 
 <div class="col-lg-8 mx-auto p-3 py-md-5">
   <header class="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom">
@@ -13,15 +14,7 @@
     </a>
 
     <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
-      <NavLink class="me-3 py-2 text-dark text-decoration-none" href="" Match="NavLinkMatch.All">
-        Home
-      </NavLink>
-      <NavLink class="me-3 py-2 text-dark text-decoration-none" href="counter">
-        Counter
-      </NavLink>
-      <NavLink class="me-3 py-2 text-dark text-decoration-none" href="fetchdata">
-        Fetch data
-      </NavLink>
+      <Menu />
     </nav>
   </header>
 

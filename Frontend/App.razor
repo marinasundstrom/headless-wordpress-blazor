@@ -1,4 +1,6 @@
-﻿<Router AppAssembly="@typeof(Program).Assembly" PreferExactMatches="@true">
+﻿@inject Site Site
+
+<Router AppAssembly="@typeof(Program).Assembly" PreferExactMatches="@true">
     <Found Context="routeData">
         <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
     </Found>
@@ -8,3 +10,11 @@
         </LayoutView>
     </NotFound>
 </Router>
+
+@code {
+    protected override async Task OnInitializedAsync() 
+    {
+        //Site.Loaded += (s, e) => InvokeAsync(() => StateHasChanged());
+        await Site.LoadAsync();
+    }
+}

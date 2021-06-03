@@ -1,0 +1,26 @@
+@using Frontend.Pages
+@using System.Net.Http
+@using System.Net.Http.Json
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+@inject HttpClient Http
+@inject Site Site
+
+@foreach(var item in items) 
+{
+    <NavLink class="me-3 py-2 text-dark text-decoration-none" href="@(item.Url.ToString().Replace(Site.Url, "/"))">
+        @item.Title
+    </NavLink>
+}
+
+@code {
+    IEnumerable<MenuItem> items = Array.Empty<MenuItem>();
+
+    const int menuId = 2;
+
+    protected override async Task OnInitializedAsync() 
+    {
+         var wordpressUrl = Configuration.GetServiceUri("app");
+        items = await Http.GetFromJsonAsync<MenuItem[]>($"{wordpressUrl}/wp-json/wp/v2/menus/{menuId}");
+    }
+}
