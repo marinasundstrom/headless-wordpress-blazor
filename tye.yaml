@@ -27,10 +27,8 @@ services:
       value: "P@ssw0rd"
     - name: MYSQL_DATABASE
       value: "wordpress"
-    - name: MYSQL_USER
-      value: "user"
-    - name: MYSQL_PASSWORD
-      value: "P@ssw0rd"
+    - name: MYSQL_ROOT_HOST
+      value: '%'
   volumes:
     - source: .data/mysql
       target: /var/lib/mysql
