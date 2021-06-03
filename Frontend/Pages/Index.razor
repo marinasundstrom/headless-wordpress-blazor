@@ -42,15 +42,7 @@ else
     {
         NavigationManager.LocationChanged += OnLocationChanged;
 
-        await Task.CompletedTask;
-    }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            await LoadData();
-        }
+        await LoadData();
     }
 
     private async void OnLocationChanged(object sender, LocationChangedEventArgs e)
