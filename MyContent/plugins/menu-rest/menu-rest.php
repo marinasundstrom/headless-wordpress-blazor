@@ -18,7 +18,7 @@ function get_my_menu( $data ) {
 }
 
 add_action( 'rest_api_init', function () {
-    register_rest_route( 'wp/v2', '/menus/(?P<id>\d+)', array(
+    register_rest_route( 'wp/v2', '/menus/(?P<id>\S+)', array(
         'methods' => 'GET',
         'callback' => 'get_my_menu',
     ) );

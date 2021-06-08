@@ -8,7 +8,10 @@
 
 @foreach(var item in items) 
 {
-    <NavLink class="me-3 py-2 text-dark text-decoration-none" href="@(item.Url.ToString().Replace(Site.Url, "/"))">
+    var itemUrl = item.Url.ToString();
+    itemUrl = itemUrl.Replace(Site.Url, "/");
+
+    <NavLink class="@LinkClass" ActiveClass="@LinkActiveClass" href="@itemUrl" Match="@(itemUrl == "/" ? NavLinkMatch.All : NavLinkMatch.Prefix)">
         @item.Title
     </NavLink>
 }
@@ -16,11 +19,18 @@
 @code {
     IEnumerable<MenuItem> items = Array.Empty<MenuItem>();
 
-    const int menuId = 2;
+    [Parameter]
+    public string Name { get; set; }
+
+    [Parameter]
+    public string LinkClass { get; set; }
+
+    [Parameter]
+    public string LinkActiveClass { get; set; } = "active";
 
     protected override async Task OnInitializedAsync() 
     {
          var wordpressUrl = Configuration.GetServiceUri("app");
-        items = await Http.GetFromJsonAsync<MenuItem[]>($"{wordpressUrl}/wp-json/wp/v2/menus/{menuId}");
+        items = await Http.GetFromJsonAsync<MenuItem[]>($"{wordpressUrl}/wp-json/wp/v2/menus/{Name}");
     }
 }
