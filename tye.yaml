@@ -10,7 +10,7 @@ services:
   project: app/app.csproj
   bindings:
     - port: 5004
-      protocol: http
+      protocol: https
 
 - name: frontend
   project: Frontend/Frontend.csproj

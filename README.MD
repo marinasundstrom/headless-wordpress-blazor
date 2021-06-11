@@ -35,9 +35,11 @@ $ tye run
 
 The Blazor Frontend is served at: ```https://localhost:5005/```
 
-While Wordpress is at: ```http://localhost:5004/```
+While Wordpress is at: ```https://localhost:5004/```.
 
 You will also be able to view all the running services in the Tye Dashboard at: ```https://localhost:8000/```
+
+For convenience, you can change the ```Site Address (URL)``` in WP Admin ```(Settings > General)``` to be the address of the frontend. Now the links in WP Admin that lead to the frontend will be correct.
 
 ## Manual installation
 
