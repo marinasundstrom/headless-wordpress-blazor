@@ -8,7 +8,7 @@ Watch [Demo Video](https://www.youtube.com/watch?v=21eOnKgJSWE)
 
 ## Features
 * List excerpts of posts, and view full posts.
-* Display a Menu that has been defined in Wordpress.
+* Display a Menu/Navigation that has been defined in Wordpress.
 
 ## Acknowledgements
 
@@ -39,6 +39,8 @@ While Wordpress is at: ```https://localhost:5005/```.
 
 
 ### Tip
+
+** This seem to break the Gutenberg Editor since it is using the setting when sending requests to Wordpress. **
 
 For convenience, you can change the ```Site Address (URL)``` in WP Admin ```(Settings > General)``` to be the address of the frontend. Now the links in WP Admin that lead to the frontend will be correct.
 
