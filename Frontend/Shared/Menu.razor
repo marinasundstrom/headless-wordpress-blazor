@@ -6,18 +6,22 @@
 @inject HttpClient Http
 @inject Site Site
 
-@foreach(var item in items) 
+@if(items is not null) 
 {
-    var itemUrl = item.Url.ToString();
-    itemUrl = itemUrl.Replace(Site.Url, "/");
+    @foreach(var item in items) 
+    {
+        var itemUrl = item.Url.ToString()
+            .Replace(Site.Url, "/")
+            .TrimEnd('/');
 
-    <NavLink class="@LinkClass" ActiveClass="@LinkActiveClass" href="@itemUrl" Match="@(itemUrl == "/" ? NavLinkMatch.All : NavLinkMatch.Prefix)">
-        @item.Title
-    </NavLink>
+        <NavLink class="@LinkClass" ActiveClass="@LinkActiveClass" href="@itemUrl" Match="@(itemUrl == "/" ? NavLinkMatch.All : NavLinkMatch.Prefix)">
+            @item.Title
+        </NavLink>
+    }
 }
 
 @code {
-    IEnumerable<MenuItem> items = Array.Empty<MenuItem>();
+    IEnumerable<MenuItem> items;
 
     [Parameter]
     public string Name { get; set; }
@@ -30,7 +34,19 @@
 
     protected override async Task OnInitializedAsync() 
     {
-         var wordpressUrl = Configuration.GetServiceUri("app");
-        items = await Http.GetFromJsonAsync<MenuItem[]>($"{wordpressUrl}/wp-json/wp/v2/menus/{Name}");
+        var wordpressUrl = new Uri(Configuration.GetValue<string>("Wordpress:SiteUrl"));
+
+        var navigation = await Http.GetFromJsonAsync<Navigation>($"{wordpressUrl}/wp-json/wp/v2/navigation/10");
+
+        var p = new AngleSharp.Html.Parser.HtmlParser();
+        var dom = p.ParseDocument("<html><body></body></html>");
+        var nodes = p.ParseFragment(navigation.Content.Rendered, dom.Body);
+
+        items = ((AngleSharp.Html.Dom.IHtmlElement)nodes.First()).Children.Select(x => { 
+            var i = x.Children.First();
+            return new MenuItem(i.InnerHtml, new Uri(i.GetAttribute("href")).PathAndQuery);    
+        });
     }
+
+    public record MenuItem(string Title, string Url);
 }

@@ -1,0 +1,85 @@
+﻿@page "/{*slug}"
+@implements IDisposable
+@inject WordPressClient WordPressClient
+@inject NavigationManager NavigationManager
+@inject Site Site
+
+@if (notFound)
+{
+    <PageNotFound />
+}
+else
+{
+    @if (p != null)
+    {
+        <PageTitle>@p.Title.Rendered - @Site.Title</PageTitle>
+
+        <HeadContent>
+            <meta name="description" content="Test">
+        </HeadContent>
+
+        <h1 class="display-1">@p.Title.Rendered</h1>
+        
+        <small class="text-muted">@p.Date @p.Embedded.Author.Select(x => x.Name).First()</small>
+
+        <div>@((MarkupString)p.Content.Rendered)</div>
+    }
+}
+
+@code {
+    private Page p;
+    private bool loadingError;
+    private bool notFound;
+
+    [Parameter]
+    public string Slug { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        NavigationManager.LocationChanged += OnLocationChanged;
+
+        await LoadData();
+    }
+
+    private async void OnLocationChanged(object sender, LocationChangedEventArgs e)
+    {
+        await LoadData();
+    }
+
+    private async Task LoadData()
+    {
+        notFound = false;
+        loadingError = false;
+
+        try
+        {
+            var queryBuilder = new PagesQueryBuilder();
+            queryBuilder.Slugs = new List<string>() { Slug };
+            queryBuilder.Statuses = new List<Status>() { Status.Publish };
+            queryBuilder.Embed = true;
+
+            var results = await WordPressClient.Pages.QueryAsync(queryBuilder);
+
+            notFound = !results.Any();
+
+            if (notFound) return;
+            p = results.Single();
+        }
+        catch (WordPressPCL.Models.Exceptions.WPException)
+        {
+            notFound = true;
+        }
+        catch (Exception)
+        {
+            loadingError = true;
+            return;
+        }
+
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        NavigationManager.LocationChanged -= OnLocationChanged;
+    }
+}

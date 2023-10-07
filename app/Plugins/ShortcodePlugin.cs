@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Pchp.Core;
 using Peachpie.AspNetCore.Mvc;
@@ -14,7 +16,7 @@ namespace PeachPied.Demo.Plugins
         {
         }
 
-        public void Configure(WpApp app)
+        public ValueTask ConfigureAsync(WpApp app, CancellationToken token)
         {
             app.AddShortcode("dotnetWpUser", new Func<string>(() => //new shortcode_handler((attrs, content) =>
             {
@@ -28,6 +30,8 @@ namespace PeachPied.Demo.Plugins
                     return "You are not logged in.";
                 }
             }));
+
+            return ValueTask.CompletedTask;
         }
     }
 }

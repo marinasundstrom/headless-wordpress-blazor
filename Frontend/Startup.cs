@@ -11,7 +11,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Frontend.Data;
 using WordPressPCL;
-using Toolbelt.Blazor.Extensions.DependencyInjection;
 
 namespace Frontend
 {
@@ -37,11 +36,9 @@ namespace Frontend
             services.AddHttpClient();
 
             services.AddScoped<WordPressClient>(sp => {
-                var wordpressUrl = Configuration.GetServiceUri("app");
+                var wordpressUrl = new Uri(Configuration.GetValue<string>("Wordpress:SiteUrl"));
                 return new WordPressClient($"{wordpressUrl}/wp-json/");
             });
-
-            services.AddHeadElementHelper();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -59,8 +56,6 @@ namespace Frontend
             }
 
             app.UseHttpsRedirection();
-
-            app.UseHeadElementServerPrerendering();
 
             app.UseStaticFiles();
 

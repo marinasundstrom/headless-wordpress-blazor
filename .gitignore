@@ -251,7 +251,6 @@ paket-files/
 .idea/
 *.sln.iml
 
-.tye
-.data
+/data
 
 .DS_Store

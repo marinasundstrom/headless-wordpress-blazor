@@ -10,13 +10,13 @@
 }
 else
 {
-    <Title>@Site.Title</Title>
+    <PageTitle>@Site.Title</PageTitle>
 
     @if(posts != null) 
     {
         @foreach(var post in posts) 
         {
-            <h1 class="display-1"><a href="@post.Slug" class="text-reset text-decoration-none">@post.Title.Rendered</a></h1>
+            <h1 class="display-1"><a href="/posts/@post.Slug" class="text-reset text-decoration-none">@post.Title.Rendered</a></h1>
 
             <small class="text-muted">@post.Date @post.Embedded.Author.Select(x => x.Name).First()</small>
 
@@ -30,7 +30,7 @@ else
 }
 
 @code {
-    private QueryResult<Post> posts;
+    private IEnumerable<Post> posts;
     private bool loadingError;
     private bool notFound;
 
@@ -71,14 +71,14 @@ else
         try
         {
             var queryBuilder = new PostsQueryBuilder();
-            queryBuilder.Statuses = new[] { Status.Publish };
+            queryBuilder.Statuses = new List<Status>() { Status.Publish };
             queryBuilder.Embed = true;
             queryBuilder.Page = Page;
             queryBuilder.PerPage = 5;
 
-            posts = await WordPressClient.Posts.Query(queryBuilder);
+            posts = await WordPressClient.Posts.QueryAsync(queryBuilder);
 
-            TotalPages = posts.TotalPages;
+            TotalPages = await WordPressClient.Posts.GetCountAsync();
         }
         catch(WordPressPCL.Models.Exceptions.WPException)
         {

@@ -28,7 +28,7 @@ namespace Frontend
 
         public async Task LoadAsync() 
         {
-            var wordpressUrl = configuration.GetServiceUri("app");
+            var wordpressUrl = new Uri(configuration.GetValue<string>("Wordpress:SiteUrl"));
             blogInfo = await http.GetFromJsonAsync<BlogInfoModel>($"{wordpressUrl}/wp-json/wp/v2/bloginfo");   
 
             Loaded?.Invoke(this, EventArgs.Empty);         

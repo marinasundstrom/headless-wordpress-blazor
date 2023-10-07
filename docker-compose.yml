@@ -1,0 +1,20 @@
+version: "3.2"
+name: "headless-wordpress-blazor"
+
+services:
+  wordpress-db:
+    image: mysql:8.0
+    container_name: wordpress-db
+    hostname: wordpress-db
+    cap_add:
+      - SYS_NICE
+    restart: always
+    environment:
+      - MYSQL_DATABASE=wordpress
+      - MYSQL_ROOT_PASSWORD=P@ssw0rd
+      - MYSQL_ROOT_HOST=%
+    ports:
+      - '3306:3306'
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+      - ./data/init.sql:/docker-entrypoint-initdb.d/init.sql

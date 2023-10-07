@@ -2,7 +2,7 @@
 
 Frontend build with Blazor, using Wordpress, running on .NET, as a headless CMS,
 
-Pre-configured for a containerized development environment using Tye.
+Pre-configured for a containerized development environment using Docker Compose
 
 Watch [Demo Video](https://www.youtube.com/watch?v=21eOnKgJSWE)
 
@@ -23,21 +23,22 @@ And a special thanks to the Wordpress community for this awesome ecosystem
 | ------------- | --------------|
 | <img src="/Screenshots/Index.png" /> | <img src="/Screenshots/Post.png" />
 
-## Run the app with Tye
+## Run the app with Docker Compose
 
 This is the simplest way of running this project.
 
-Provided that you have the Tye CLI tools installed, you will be able to launch all services, including MySQL, by running this command in the solution folder:
+But you need to do the necessary configuration of Wordpress.
 
 ```sh
-$ tye run
+$ docker compose up -d
 ```
 
-The Blazor Frontend is served at: ```https://localhost:5005/```
+The Blazor Frontend is served at: ```https://localhost:5001/```
 
-While Wordpress is at: ```https://localhost:5004/```.
+While Wordpress is at: ```https://localhost:5005/```.
 
-You will also be able to view all the running services in the Tye Dashboard at: ```https://localhost:8000/```
+
+### Tip
 
 For convenience, you can change the ```Site Address (URL)``` in WP Admin ```(Settings > General)``` to be the address of the frontend. Now the links in WP Admin that lead to the frontend will be correct.
 

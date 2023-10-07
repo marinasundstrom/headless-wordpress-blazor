@@ -1,4 +1,4 @@
-﻿@page "/{*slug}"
+﻿@page "/posts/{*slug}"
 @implements IDisposable
 @inject WordPressClient WordPressClient
 @inject NavigationManager NavigationManager
@@ -12,7 +12,11 @@ else
 {
     @if (post != null)
     {
-        <Title>@post.Title.Rendered - @Site.Title</Title>
+        <PageTitle>@post.Title.Rendered - @Site.Title</PageTitle>
+
+        <HeadContent>
+            <meta name="description" content="Test">
+        </HeadContent>
 
         <h1 class="display-1">@post.Title.Rendered</h1>
         
@@ -50,11 +54,11 @@ else
         try
         {
             var queryBuilder = new PostsQueryBuilder();
-            queryBuilder.Slugs = new[] { Slug };
-            queryBuilder.Statuses = new[] { Status.Publish };
+            queryBuilder.Slugs = new List<string>() { Slug };
+            queryBuilder.Statuses = new List<Status>() { Status.Publish };
             queryBuilder.Embed = true;
 
-            var results = await WordPressClient.Posts.Query(queryBuilder);
+            var results = await WordPressClient.Posts.QueryAsync(queryBuilder);
 
             notFound = !results.Any();
 

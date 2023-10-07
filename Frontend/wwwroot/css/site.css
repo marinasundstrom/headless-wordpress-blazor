@@ -45,14 +45,12 @@ a, .btn-link {
         right: 0.75rem;
         top: 0.5rem;
     }
-
-
     
     .menu-link {
+        font-weight: 500 !important;
         color: #6c757d !important;
     }
 
     .menu-link.active {
-        font-weight: 500;
         color: black !important;
     }
